@@ -178,7 +178,7 @@ export default function AdminScanner() {
 
       {/* Bottom Label */}
       <div className="absolute bottom-10 left-0 right-0 text-center z-50 pointer-events-none">
-        <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">Pro Parking • Exit Scanner</p>
+        <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">LOTGRID Systems • Exit Scanner</p>
       </div>
     </div>
   );

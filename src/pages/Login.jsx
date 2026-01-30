@@ -103,8 +103,8 @@ export default function Login() {
                     <Input
                       icon={Mail}
                       type="email"
-                      placeholder="dakotawhitecloud@proparking.com"
-                      defaultValue="dakotawhitecloud@proparking.com"
+                      placeholder="dakotawhitecloud@lotgridsystems.com"
+                      defaultValue="dakotawhitecloud@lotgridsystems.com"
                     />
                     <Input
                       icon={Lock}

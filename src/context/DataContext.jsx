@@ -53,7 +53,7 @@ const INITIAL_BARRIERS = {
 
 const INITIAL_USER = {
     name: 'Dakota Whitecloud',
-    email: 'dakotawhitecloud@proparking.com',
+    email: 'dakotawhitecloud@lotgridsystems.com',
     mobile: '+1 (555) 123-4567',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQF2yaox2cALIq_yyd-9qEyovEsficJr7X9QQ&s'
 };
@@ -204,9 +204,24 @@ export const DataProvider = ({ children }) => {
     // --- State Initialization ---
 
     // Helper to load from localStorage or fallback
+    // Includes migration from old pro_parking_ keys to new lotgrid_ keys
     const loadState = (key, fallback) => {
         try {
-            const saved = localStorage.getItem(key);
+            // Try loading from new key first
+            let saved = localStorage.getItem(key);
+            
+            // If not found, try migrating from old key
+            if (!saved) {
+                const oldKey = key.replace('lotgrid_', 'pro_parking_');
+                const oldData = localStorage.getItem(oldKey);
+                if (oldData) {
+                    // Migrate data to new key
+                    localStorage.setItem(key, oldData);
+                    localStorage.removeItem(oldKey);
+                    saved = oldData;
+                }
+            }
+            
             return saved ? JSON.parse(saved) : fallback;
         } catch (e) {
             console.error(`Error loading ${key}`, e);
@@ -214,54 +229,55 @@ export const DataProvider = ({ children }) => {
         }
     };
 
-    const [notifications, setNotifications] = useState(() => loadState('pro_parking_notifications', INITIAL_NOTIFICATIONS));
-    const [bookings, setBookings] = useState(() => loadState('pro_parking_bookings', INITIAL_BOOKINGS));
-    const [vehicles, setVehicles] = useState(() => loadState('pro_parking_vehicles', INITIAL_VEHICLES));
-    const [barriers, setBarriers] = useState(() => loadState('pro_parking_barriers', INITIAL_BARRIERS));
-    const [slots, setSlots] = useState(() => loadState('pro_parking_slots', INITIAL_SLOTS));
-    const [transactions, setTransactions] = useState(() => loadState('pro_parking_transactions', INITIAL_TRANSACTIONS));
-    const [user, setUser] = useState(() => loadState('pro_parking_user', INITIAL_USER));
+
+    const [notifications, setNotifications] = useState(() => loadState('lotgrid_notifications', INITIAL_NOTIFICATIONS));
+    const [bookings, setBookings] = useState(() => loadState('lotgrid_bookings', INITIAL_BOOKINGS));
+    const [vehicles, setVehicles] = useState(() => loadState('lotgrid_vehicles', INITIAL_VEHICLES));
+    const [barriers, setBarriers] = useState(() => loadState('lotgrid_barriers', INITIAL_BARRIERS));
+    const [slots, setSlots] = useState(() => loadState('lotgrid_slots', INITIAL_SLOTS));
+    const [transactions, setTransactions] = useState(() => loadState('lotgrid_transactions', INITIAL_TRANSACTIONS));
+    const [user, setUser] = useState(() => loadState('lotgrid_user', INITIAL_USER));
 
     // --- Persistence Effects ---
 
     useEffect(() => {
-        localStorage.setItem('pro_parking_notifications', JSON.stringify(notifications));
+        localStorage.setItem('lotgrid_notifications', JSON.stringify(notifications));
     }, [notifications]);
 
     useEffect(() => {
-        localStorage.setItem('pro_parking_bookings', JSON.stringify(bookings));
+        localStorage.setItem('lotgrid_bookings', JSON.stringify(bookings));
     }, [bookings]);
 
     useEffect(() => {
-        localStorage.setItem('pro_parking_vehicles', JSON.stringify(vehicles));
+        localStorage.setItem('lotgrid_vehicles', JSON.stringify(vehicles));
     }, [vehicles]);
 
     useEffect(() => {
-        localStorage.setItem('pro_parking_barriers', JSON.stringify(barriers));
+        localStorage.setItem('lotgrid_barriers', JSON.stringify(barriers));
     }, [barriers]);
 
     useEffect(() => {
-        localStorage.setItem('pro_parking_slots', JSON.stringify(slots));
+        localStorage.setItem('lotgrid_slots', JSON.stringify(slots));
     }, [slots]);
 
     useEffect(() => {
-        localStorage.setItem('pro_parking_transactions', JSON.stringify(transactions));
+        localStorage.setItem('lotgrid_transactions', JSON.stringify(transactions));
     }, [transactions]);
 
     useEffect(() => {
-        localStorage.setItem('pro_parking_user', JSON.stringify(user));
+        localStorage.setItem('lotgrid_user', JSON.stringify(user));
     }, [user]);
 
     // --- Actions ---
 
     const logout = () => {
-        localStorage.removeItem('pro_parking_notifications');
-        localStorage.removeItem('pro_parking_bookings');
-        localStorage.removeItem('pro_parking_vehicles');
-        localStorage.removeItem('pro_parking_barriers');
-        localStorage.removeItem('pro_parking_slots');
-        localStorage.removeItem('pro_parking_transactions');
-        localStorage.removeItem('pro_parking_user');
+        localStorage.removeItem('lotgrid_notifications');
+        localStorage.removeItem('lotgrid_bookings');
+        localStorage.removeItem('lotgrid_vehicles');
+        localStorage.removeItem('lotgrid_barriers');
+        localStorage.removeItem('lotgrid_slots');
+        localStorage.removeItem('lotgrid_transactions');
+        localStorage.removeItem('lotgrid_user');
 
         // Reset to initial
         setNotifications(INITIAL_NOTIFICATIONS);

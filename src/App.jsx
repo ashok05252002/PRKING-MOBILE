@@ -51,7 +51,7 @@ const UserLayout = ({ type }) => {
 
   useEffect(() => {
     // Check if we've already shown the mock web booking this session
-    const hasShown = sessionStorage.getItem('pro_parking_web_booking_shown');
+    const hasShown = sessionStorage.getItem('lotgrid_web_booking_shown');
 
     if (!hasShown && (location.pathname === `${basePath}/home`)) {
       const timer = setTimeout(() => {
@@ -67,7 +67,7 @@ const UserLayout = ({ type }) => {
 
         setNewBooking(mockBooking);
         setShowNotification(true);
-        sessionStorage.setItem('pro_parking_web_booking_shown', 'true');
+        sessionStorage.setItem('lotgrid_web_booking_shown', 'true');
 
         // Notification record for the List Page
         const mockNotif = {
